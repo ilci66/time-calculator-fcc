@@ -22,37 +22,62 @@ def add_time(start, duration, day = None ):
   
   midnight = 24*60
   
-  DaysPassed = 0
+  daysPassed = 0
   timeReturnInMins = 0
 
   if endTime > midnight:
-    DaysPassed = math.floor(endTime / midnight)
+    daysPassed = math.floor(endTime / midnight)
     timeReturnInMins = endTime % midnight
   else:
     timeReturnInMins = endTime
 
   hourOutput = str(math.floor(timeReturnInMins / 60))
   minOutput = str(timeReturnInMins % 60)
-  amOrPmOutput = "AM"
+  if len(minOutput) == 1:
+    minOutput = "0" + minOutput
 
-  if int(hourOutput) > 12:
-    hourOutput = str(int(hourOutput) - 12)
+  amOrPmOutput = "AM"
+  
+  if hourOutput == 0:
+    hourOutput == "12"
+  print(hourOutput)
+  if int(hourOutput) >= 12:
+    if int(hourOutput) > 12:
+      print(hourOutput)
+      hourOutput = str(int(hourOutput) - 12)
     amOrPmOutput = "PM"
 
-# for loop yaz gunler için her geçen haftada 7 eksilterek 
+  daysLater = ""
+  
+  if daysPassed == 1:
+    daysLater += '(next day)'
+  elif daysPassed > 1:
+    daysLater += '({} days later)'.format(daysPassed)
+
+  dayOutput = ""
+  if day:
+    day = day.capitalize()
+    if daysPassed == 0:
+      dayOutput = day
+    elif daysPassed >= 0:
+      dayNum = int(daysPassed) % 7
+      dayIndex = int(days.index(day))
+      wantedNum = (dayNum + dayIndex) % 7
+      dayOutput = days[wantedNum]
 
 
-  print(hourOutput, minOutput, amOrPmOutput, DaysPassed, day)
+  finalString = "{}:{} {}".format(hourOutput,minOutput,amOrPmOutput)
+  if day:
+    finalString += ", {}".format(dayOutput)
+  if int(daysPassed) > 0:
+    finalString += " {}".format(daysLater)
 
-  # if amOrPmInput == "AM" and endTime > 12*60:
-
-
-  # print(startHour)
-  # print(startMin)
-  # print(startInMins)
-  # print(midnight)
-  # print(durationInMins)
-  # print(amOrPmInput)
+  print(finalString)
+  return finalString
 
 
-add_time("3:00 PM", "3:10", "Tuesday")
+add_time("11:59 PM", "24:05")
+
+
+        # actual = add_time("11:59 PM", "24:05")
+        # expected = "12:04 AM (2 days later)"
