@@ -65,7 +65,8 @@ def add_time(start, duration, day = None ):
       wantedNum = (dayNum + dayIndex) % 7
       dayOutput = days[wantedNum]
 
-
+  if int(hourOutput) == 0:
+    hourOutput = "12"
   finalString = "{}:{} {}".format(hourOutput,minOutput,amOrPmOutput)
   if day:
     finalString += ", {}".format(dayOutput)
